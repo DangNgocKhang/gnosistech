@@ -1,0 +1,1 @@
+export const GNOSIS_API_URL = import.meta.env.VITE_GNOSIS_API_URL;

@@ -1,28 +1,32 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { assets } from "../../assets/assets";
 import Navigate from "./Navigate";
 import { deleteGoogleLoginCookies } from "../../utils/auth/handleCookies";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
 import { clearUserData } from "../../redux/slices/userSlice";
+import { onAuthStateChanged } from "firebase/auth";
+import { useEffect } from "react";
+import { auth } from "../../firebaseConfig";
 
 const Header = () => {
   const userData = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
+  const location = useLocation();
 
-  //   useEffect(()=>{
-  //     onAuthStateChanged(auth, (user) => {
-  //         if (user) {
+    useEffect(()=>{
+      onAuthStateChanged(auth, (user) => {
+          if (user) {
 
-  //           const uid = user.uid;
-  //           console.log("uid", uid)
-  //         } else {
+            const uid = user.uid;
+            console.log("uid", uid)
+          } else {
 
-  //           console.log("user is logged out")
-  //         }
-  //       });
+            console.log("user is logged out")
+          }
+        });
 
-  // }, [])
+  }, [])
 
   const handleLogout = () => {
     deleteGoogleLoginCookies();
@@ -58,15 +62,18 @@ const Header = () => {
         <Link to="/login">
           {userData.status ? (
             <span
-              className={`text-gnosis-primary-blue-th1 hover:cursor-pointer`}
+              className={`text-gnosis-primary-blue-th1 hover:cursor-pointer hover:text-gnosis-primary-white`}
               onClick={handleLogout}
             >
               LOGOUT
             </span>
           ) : (
             <span
-              className={`text-gnosis-primary-blue-th1 hover:cursor-pointer`}
-
+              className={`${
+                location.pathname === "/login"
+                  ? "text-gnosis-primary-white"
+                  : "text-gnosis-primary-blue-th1"
+              } hover:cursor-pointer`}
             >
               LOGIN
             </span>

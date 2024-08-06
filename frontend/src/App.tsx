@@ -14,6 +14,7 @@ const AboutUs = lazy(() => import("./components/Aboutus/AboutUs"));
 const UploadFile = lazy(() => import("./components/Upload/UploadFile"));
 const UndevelopedPage = lazy(() => import("./components/PagesState/UndevelopedPage"));
 const Login = lazy(() => import("./components/Login/Login"));
+const Register = lazy(() => import("./components/Login/Register"));
 
 const App = () => {
   return (
@@ -24,6 +25,7 @@ const App = () => {
             <Route path="/" element={<Layout />}>
               <Route index element={<Home />} />
               <Route path="aboutus" element={<AboutUs />} />
+              <Route path="register" element={<Register />} />
               <Route path="github" element={<UndevelopedPage />} />
               <Route path="upload" element={<PrivateRoute element={UploadFile} />} />
               <Route path="login" element={<Login />} />

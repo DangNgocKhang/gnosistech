@@ -1,74 +1,109 @@
-
-import { signInWithPopup } from "firebase/auth";
-import { auth, googleProvider } from "../../firebaseConfig";
+import { useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import ThirdPartyLogin from "./ThirdPartyLogin";
+import ButtonSubmit from "./components/ButtonSubmit";
+import InputField from "./components/InputField";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 import { IBaseUser, IUserCookie } from "../../types/User";
-import { setGoogleLoginCookies } from "../../utils/auth/handleCookies";
-import { useAppDispatch } from "../../redux/hook";
 import { setUserData } from "../../redux/slices/userSlice";
+import { useAppDispatch } from "../../redux/hook";
+import { setGoogleLoginCookies } from "../../utils/auth/handleCookies";
 import { toast } from "react-toastify";
-import { assets } from "../../assets/assets";
-import { useLocation, useNavigate } from "react-router-dom";
+import { FirebaseError } from "firebase/app";
 
 const Login: React.FC = () => {
-  const location = useLocation();
+  const [userEmail, setUserEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const location = useLocation();
+
   const from = location.state?.from?.pathname || "/";
 
-  
-  const dispatch = useAppDispatch();
-
-  const handleGoogleSignIn = async () => {
+  const handleLoginCredential = async (e: React.FormEvent) => {
+    e.preventDefault();
     try {
-      const result = await signInWithPopup(auth, googleProvider);
-      const token = await result.user.getIdToken();
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        userEmail,
+        password
+      );
+      const token = await userCredential.user.getIdToken();
 
-      const userAuthGoogleLogin: IBaseUser = {
-        id: result.user.uid,
-        username: result.user.displayName,
+      const userLogin: IBaseUser = {
+        id: userCredential.user.uid,
+        username: userCredential.user.displayName,
       };
-      dispatch(setUserData(userAuthGoogleLogin));
 
       const userLoginCookies: IUserCookie = {
         token: token,
       };
+      dispatch(setUserData(userLogin));
       setGoogleLoginCookies(userLoginCookies);
-      
       navigate(from, { replace: true });
-
     } catch (error) {
-      toast.error("Error during Google sign-in");
+      if (error instanceof FirebaseError) {
+        switch (error.code) {
+          case "auth/invalid-credential":
+            toast.error("Invalid credentials. Check your email and password.");
+            break;
+          case "auth/user-not-found":
+            toast.error("No user found with this email.");
+            break;
+          case "auth/wrong-password":
+            toast.error("Incorrect password.");
+            break;
+          case "auth/invalid-email":
+            toast.error("Invalid email address.");
+            break;
+          case "auth/network-request-failed":
+            toast.error("Network error. Check your connection.");
+            break;
+          default:
+            toast.error("An unexpected error occurred.");
+        }
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
     }
   };
 
-
-
   return (
-    <div
-      className="h-[calc(100vh-85px)] w-screen drop-shadow-lg bg-gnosis-primary-black"
-      onClick={() => {
-        
-      }}
-    >
-      <div
-        className="h-[450px] w-[400px] max-w-[90vw] lg:h-[500px] lg:w-[500px] bg-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg flex"
-        onClick={(event) => {
-          event.stopPropagation();
-        }}
-      >
-
-        <button
-          className="m-auto h-max w-max  px-4 py-4 border-2 border-gnosis-primary-black rounded-xl font-bold text-2xl flex items-center bg-gnosis-primary-white hover:bg-gnosis-primary-blue-th2 drop-shadow-lg"
-          onClick={handleGoogleSignIn}
-        >
-          <img
-            loading="lazy"
-            src={assets.iconGoogle}
-            alt="iconGoogle"
-            title="iconGoogle"
-            className="h-max w-auto mr-2"
+    <div className="h-[calc(100vh-85px)] w-screen drop-shadow-lg bg-gnosis-primary-black">
+      <div className="h-max max-h-[95%] w-[400px] max-w-[90vw] lg:w-[400px] px-6 py-4 bg-gnosis-primary-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg flex flex-col">
+        <h1 className="text-2xl font-bold text-center text-indigo-600">
+          LOGIN
+        </h1>
+        <form onSubmit={handleLoginCredential} className=" text-indigo-600">
+          <InputField
+            id="email"
+            type="email"
+            value={userEmail}
+            onChange={(e) => setUserEmail(e.target.value)}
+            label="Email"
+            required
           />
-          Login with Google
-        </button>
+
+          <InputField
+            id="password"
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            label="Password"
+            required
+          />
+
+          <ButtonSubmit text="LOGIN" />
+        </form>
+        <div className="py-4 text-center text-xl font-semibold">
+          No account yet?{" "}
+          <Link className="text-indigo-600 hover:underline" to="/register">
+            Register here
+          </Link>
+        </div>
+
+        <ThirdPartyLogin />
       </div>
     </div>
   );

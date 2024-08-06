@@ -85,8 +85,8 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="h-[calc(100vh-85px)] w-screen drop-shadow-lg bg-gnosis-primary-black">
-      <div className="h-max max-h-[95%] w-[400px] max-w-[90vw] lg:w-[450px] px-6 py-4 bg-gnosis-primary-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg flex flex-col">
+    <div className="h-[calc(100vh-85px)] w-screen bg-gnosis-primary-white">
+      <div className="h-max max-h-[95%] w-[400px] max-w-[90vw] lg:w-[450px] px-6 drop-shadow-lg border-2 py-4 bg-gnosis-primary-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg flex flex-col">
         <h1 className="text-2xl font-bold text-center text-indigo-600">
           REGISTER
         </h1>

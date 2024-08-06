@@ -18,9 +18,7 @@ const Layout = () => {
       <div className="relative mt-[85px]">
         <Outlet />
       </div>
-      <Suspense fallback={<LoadingPage />}>
-        {width >= 1024 && <Footer /> }
-      </Suspense>
+      <Footer />
       
     </>
   );

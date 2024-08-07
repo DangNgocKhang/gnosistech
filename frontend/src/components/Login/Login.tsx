@@ -71,7 +71,7 @@ const Login: React.FC = () => {
 
   return (
     <div className="h-[calc(100vh-85px)] w-screen  bg-gnosis-primary-white">
-      <div className="h-max max-h-[95%] w-[400px] max-w-[90vw] lg:w-[400px] px-6 py-4 drop-shadow-lg border-2 bg-gnosis-primary-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg flex flex-col">
+      <div className="h-max max-h-[95%] w-[400px] max-w-[90vw] px-6 py-4 drop-shadow-lg border-2 bg-gnosis-primary-white absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 rounded-lg flex flex-col">
         <h1 className="text-2xl font-bold text-center text-indigo-600">
           LOGIN
         </h1>
@@ -93,10 +93,11 @@ const Login: React.FC = () => {
             label="Password"
             required
           />
-
-          <ButtonSubmit text="LOGIN" />
+          <div className="mt-6">
+            <ButtonSubmit text="LOGIN" />
+          </div>
         </form>
-        <div className="py-4 text-center text-xl font-semibold">
+        <div className="my-4 text-center font-semibold">
           No account yet?{" "}
           <Link className="text-indigo-600 hover:underline" to="/register">
             Register here

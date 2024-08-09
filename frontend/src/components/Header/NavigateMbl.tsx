@@ -84,14 +84,14 @@ const NavigateMbl: React.FC<NavigateMblProps> = ({
         handleOpenSub={handleOpenSub}
         subNavList={listSubBlog}
       />
-      <Link to="/upload">
+      <Link to="/file-storage">
         <span
           className={`${
-            currentPath === "/upload" ? colorVisit : colorNoneVisit
+            currentPath === "/file-storage" ? colorVisit : colorNoneVisit
           }`}
-          onClick={() => handleOpenSub("upload")}
+          onClick={() => handleOpenSub("file-storage")}
         >
-          UPLOAD
+          STORAGE
         </span>
       </Link>
     </>

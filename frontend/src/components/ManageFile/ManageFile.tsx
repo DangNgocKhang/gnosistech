@@ -18,8 +18,6 @@ const ManageFile = () => {
   const [selectedFolder, setSelectedFolder] = useState<string[]>([]);
   const [selectedFile, setSelectedFile] = useState<string[]>([]);
 
-
-
   useEffect(() => {
     const getFiles = async () => {
       try {
@@ -48,7 +46,7 @@ const ManageFile = () => {
   }, [isSelecting]);
   return (
     <div className="h-max min-h-[calc(100vh-85px)] w-screen bg-white">
-      <div className="flex gap-2 p-4">
+      <div className="flex gap-2 p-4 flex-wrap">
         <UploadFileSelector />
         <UploadDirectorySelector />
 
@@ -63,16 +61,20 @@ const ManageFile = () => {
         >
           Select file to Download or Delete
         </button>
-        <ButtonDownloadFile
-          setIsSelecting={setIsSelecting}
-          filesToDownload={selectedFile}
-          foldersToDownload={selectedFolder}
-        />
-        <ButtonDeleteFile
-          setIsSelecting={setIsSelecting}
-          filesToDelete={selectedFile}
-          foldersToDelete={selectedFolder}
-        />
+        {isSelecting && (
+          <>
+            <ButtonDownloadFile
+              setIsSelecting={setIsSelecting}
+              filesToDownload={selectedFile}
+              foldersToDownload={selectedFolder}
+            />
+            <ButtonDeleteFile
+              setIsSelecting={setIsSelecting}
+              filesToDelete={selectedFile}
+              foldersToDelete={selectedFolder}
+            />
+          </>
+        )}
 
         <UploadZipFile />
       </div>

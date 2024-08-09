@@ -31,7 +31,7 @@ const ListFile: React.FC<ListFileProps> = ({
   return (
     <div>
       <h2 className="font-semibold mb-2">Files</h2>
-      <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+      <ul className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
         {files.map((fileName: string) => {
           return (
             <li key={fileName} className="border rounded-lg overflow-hidden">

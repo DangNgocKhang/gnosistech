@@ -39,14 +39,14 @@ const ListFolder: React.FC<ListFolderProps> = ({
   return (
     <div>
       <h2 className="font-semibold mb-2">Folders</h2>
-      <ul className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-4">
+      <ul className="grid grid-cols- sm:grid-cols-3 lg:grid-cols-4 gap-4 mb-4">
         {folders.map((folderName: string) => (
           <li key={folderName} className="border rounded-lg overflow-hidden">
             <button
               className="w-full flex justify-between items-center p-4 text-left font-semibold bg-gnosis-primary-blue-th2 hover:bg-gnosis-primary-blue-th1 focus:outline-none focus:ring-2 focus:ring-blue-500"
               onClick={() => handleClickFolder(folderName)}
             >
-              <div className="flex items-center">
+              <div className="flex items-center flex-1 min-w-0">
                 <MdFolder className="h-6 w-auto mr-5 text-gnosis-gray-th2 shrink-0" />
                 <span className="truncate whitespace-nowrap">{folderName}</span>
               </div>

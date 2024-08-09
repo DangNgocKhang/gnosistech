@@ -22,7 +22,7 @@ const NavigateFile = () => {
   const handleClickPathNavigate = (index: number) => {
     const pathNavigate = fileData.currentPathFile.slice(0, index + 1);
     dispatch(setCurrentPath(pathNavigate));
-    setCurrentPathState(pathNavigate); 
+    setCurrentPathState(pathNavigate);
   };
 
   const [displayNavigate, setDisplayNavigate] = useState<NavigateItem[]>([]);
@@ -66,11 +66,10 @@ const NavigateFile = () => {
 
     // Persist the current path whenever it changes
     setCurrentPathState(listPathCurrent);
-
   }, [fileData.currentPathFile, setCurrentPathState]);
 
   return (
-    <div className="h-10 flex gap-4 text-2xl relative -left-5 mb-4">
+    <div className="h-10 flex sm:gap-4 sm:text-2xl relative -left-5 mb-4">
       <button
         className="bg-gnosis-primary-white hover:bg-gnosis-primary-blue-th2 rounded-full py-2 px-4 flex justify-center items-center"
         onClick={() => {
@@ -82,7 +81,7 @@ const NavigateFile = () => {
       </button>
 
       {hiddenNavigate.length > 0 && (
-        <div className="flex items-center gap-4 relative">
+        <div className="flex items-center sm:gap-4 relative">
           <MdKeyboardArrowRight />
           <MdMoreHoriz
             className="cursor-pointer hover:bg-gnosis-primary-blue-th2 p-2 h-full w-auto rounded-full"
@@ -101,8 +100,7 @@ const NavigateFile = () => {
                   }}
                 >
                   <MdFolder className="h-6 w-auto mr-5 text-gnosis-gray-th2 shrink-0" />
-
-                  <span className="truncate whitespace-nowrap">
+                  <span className="truncate whitespace-nowrap ">
                     {nav.filename}
                   </span>
                 </button>
@@ -113,7 +111,7 @@ const NavigateFile = () => {
       )}
 
       {displayNavigate.map((nav: NavigateItem) => (
-        <div key={nav.index} className="flex items-center gap-4">
+        <div key={nav.index} className="flex items-center sm:gap-4">
           <MdKeyboardArrowRight />
           <button
             className="bg-gnosis-primary-white hover:bg-gnosis-primary-blue-th2 rounded-full py-2 px-4 flex justify-center items-center"

@@ -1,7 +1,8 @@
 from fastapi import Depends
 from fastapi.security import HTTPAuthorizationCredentials, HTTPBearer
-from apps.accounts.services.token import TokenService
+
 from apps.accounts.schemas import UserFirebase
+from apps.accounts.services.token import TokenService
 
 
 class AccountService:

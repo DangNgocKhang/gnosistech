@@ -1,26 +1,31 @@
 import { GNOSIS_API_URL } from "../../config";
 import getAxiosClient from "../../utils/axios/axiosClient";
 
-
-/* ---------Delete file or multiple files--------- */
-export const handleDeleteFile = async (userId: string, filenames: string[]) => {
-  const formData = new FormData();
-  formData.append("user_id", userId);
-  filenames.forEach((file) => formData.append("filenames", file));
-
+/*--------------------------------------------
+  --------------- DELETE FILE AND FOLDER --------
+  -------------------------------------------- */
+export const handleDelete = async (
+  listFilenames: string[],
+  listFoldernames: string[],
+  paths: string[]
+) => {
   try {
-    const axiosClient = getAxiosClient()
-    const response = await axiosClient.delete(
-      `${GNOSIS_API_URL}/upload/delete_files`,
-      {
-        data: formData,
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      }
+    const queryParams = new URLSearchParams();
+    listFilenames.forEach((filename) =>
+      queryParams.append("file_names", filename)
     );
-    return response.status;
+    listFoldernames.forEach((foldername) =>
+      queryParams.append("directory_names", foldername)
+    );
+    paths.forEach((path) => queryParams.append("paths", path));
+
+    const axiosClient = getAxiosClient();
+    const response = await axiosClient.delete(`${GNOSIS_API_URL}/file/delete`, {
+      params: queryParams,
+    });
+
+    return response;
   } catch (error) {
-    throw new Error("Delete file unsuccessful"); // Re-throw the error to be caught by the calling function
+    throw new Error("Error delete files");
   }
 };

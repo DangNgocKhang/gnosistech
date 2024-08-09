@@ -1,15 +1,15 @@
-from datetime import datetime, timedelta
 import os
+from datetime import datetime, timedelta
 from typing import Dict
-from dotenv import load_dotenv
-from fastapi import Depends, HTTPException, status
-from jose import jwt, JWTError
-from fastapi.security import HTTPAuthorizationCredentials, OAuth2PasswordBearer
-
-from apps.accounts.schemas import UserFirebase
 
 import firebase_admin
+from dotenv import load_dotenv
+from fastapi import Depends, HTTPException, status
+from fastapi.security import HTTPAuthorizationCredentials, OAuth2PasswordBearer
 from firebase_admin import auth, credentials
+from jose import JWTError, jwt
+
+from apps.accounts.schemas import UserFirebase
 
 # Load environment variables from .env file
 load_dotenv()
@@ -61,7 +61,6 @@ class TokenService:
                 self.user = None
                 self.user_id = user
 
-
     @classmethod
     async def fetch_user_firebase(
         cls, credential: HTTPAuthorizationCredentials
@@ -71,7 +70,7 @@ class TokenService:
         try:
             # Verify the ID token while checking if the token is revoked by passing check_revoked=True.
             decoded_token = auth.verify_id_token(credential.credentials)
-            
+
             userFirebase = UserFirebase(
                 user_id=decoded_token.get("uid"),
                 username=decoded_token.get("name"),

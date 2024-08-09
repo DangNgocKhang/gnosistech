@@ -4,9 +4,15 @@ import { PiListBold } from "react-icons/pi";
 import { IoClose, IoSearch } from "react-icons/io5";
 import NavigateMbl from "./NavigateMbl";
 import { assets } from "../../assets/assets";
-import { deleteGoogleLoginCookies } from "../../utils/auth/handleCookies";
+import {
+  deleteGoogleLoginCookies,
+  getGoogleLoginCookies,
+} from "../../utils/auth/handleCookies";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { clearUserData } from "../../redux/slices/userSlice";
+import { clearUserData, setUserData } from "../../redux/slices/userSlice";
+import { onAuthStateChanged, signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
+import { IUserCookie } from "../../types/User";
 
 const HeaderMbl = () => {
   const [isOpenCategory, setIsOpenCategory] = useState<boolean>(false);
@@ -27,16 +33,30 @@ const HeaderMbl = () => {
   };
 
   useEffect(() => {
-    document.addEventListener("mousedown", handleClickOutside);
+    /*--------------------------------------------
+      ----- HANDLE USER LOGOUT/TOKEN EXPIRED -----
+      -------------------------------------------- */
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        deleteGoogleLoginCookies();
+        dispatch(clearUserData());
+      }
+    });
 
+    const userData: IUserCookie | null = getGoogleLoginCookies();
+    if (userData) {
+      dispatch(setUserData(userData));
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleLogout = () => {
-    deleteGoogleLoginCookies();
-    dispatch(clearUserData());
+    signOut(auth);
   };
 
   return (
@@ -101,11 +121,7 @@ const HeaderMbl = () => {
               LOGOUT
             </span>
           ) : (
-            <span
-              className={`text-gnosis-primary-black`}
-            >
-              LOGIN
-            </span>
+            <span className={`text-gnosis-primary-black`}>LOGIN</span>
           )}
         </Link>
       </div>

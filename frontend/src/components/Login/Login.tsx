@@ -37,6 +37,8 @@ const Login: React.FC = () => {
       };
 
       const userLoginCookies: IUserCookie = {
+        id: userCredential.user.uid,
+        username: userCredential.user.displayName,
         token: token,
       };
       dispatch(setUserData(userLogin));

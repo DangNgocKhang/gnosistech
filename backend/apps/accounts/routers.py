@@ -1,10 +1,11 @@
 from fastapi import APIRouter, Depends, status
+
 from apps.accounts import schemas
 from apps.accounts.services.authenticate import AccountService
 from apps.accounts.services.user import UserManager
 
-
 router = APIRouter(prefix="/accounts", tags=["Users"])
+
 
 @router.get(
     "/me",

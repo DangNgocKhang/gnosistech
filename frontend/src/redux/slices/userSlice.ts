@@ -1,12 +1,6 @@
 import { PayloadAction, createSlice } from "@reduxjs/toolkit";
 import { IBaseUser } from "../../types/User";
 
-// interface Props {
-//   propertyCodeSelected: string[];
-//   propertyAttributeSelected: string;
-//   isShowChart: boolean;
-// }
-
 const initialState: IBaseUser = {
   id: "",
   username: "",
@@ -26,8 +20,12 @@ const userSlice = createSlice({
       state.username = initialState.username;
       state.status = initialState.status;
     },
+    setActivateUser: (state, action: PayloadAction<boolean>) => {
+      state.status = action.payload;
+    },
   },
 });
 
-export const { setUserData, clearUserData } = userSlice.actions;
+export const { setUserData, clearUserData, setActivateUser } =
+  userSlice.actions;
 export default userSlice.reducer;

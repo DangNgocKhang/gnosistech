@@ -27,6 +27,8 @@ const ButtonLoginWithGoogle = () => {
       dispatch(setUserData(userAuthGoogleLogin));
 
       const userLoginCookies: IUserCookie = {
+        id: result.user.uid,
+        username: result.user.displayName,
         token: token,
       };
       setGoogleLoginCookies(userLoginCookies);

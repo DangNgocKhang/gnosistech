@@ -11,7 +11,7 @@ import PrivateRoute from "./utils/router/PrivateRoute";
 const Layout = lazy(() => import("./components/Layout"));
 const Home = lazy(() => import("./components/Home/Home"));
 const AboutUs = lazy(() => import("./components/Aboutus/AboutUs"));
-const UploadFile = lazy(() => import("./components/Upload/UploadFile"));
+const ManageFile = lazy(() => import("./components/ManageFile/ManageFile"));
 const UndevelopedPage = lazy(() => import("./components/PagesState/UndevelopedPage"));
 const Login = lazy(() => import("./components/Login/Login"));
 const Register = lazy(() => import("./components/Login/Register"));
@@ -27,7 +27,7 @@ const App = () => {
               <Route path="aboutus" element={<AboutUs />} />
               <Route path="register" element={<Register />} />
               <Route path="github" element={<UndevelopedPage />} />
-              <Route path="upload" element={<PrivateRoute element={UploadFile} />} />
+              <Route path="file-storage" element={<PrivateRoute element={ManageFile} />} />
               <Route path="login" element={<Login />} />
               <Route path="signals" element={<UndevelopedPage />}>
                 <Route path="stock-market" element={<UndevelopedPage />} />

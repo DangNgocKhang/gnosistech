@@ -1,32 +1,19 @@
 import { GNOSIS_API_URL } from "../../config";
 import getAxiosClient from "../axios/axiosClient";
 
-export const handleFileDownload = async ( filename: string) => {
-  try {
-    const axiosClient = getAxiosClient()
-    const response = await axiosClient.get(
-      `${GNOSIS_API_URL}/upload/download/${filename}`,
-      {
-        responseType: "blob",
-      }
-    );
-    const result = {
-      response: response,
-      fileName: filename,
-    };
-    return result;
-  } catch (error) {
-    throw new Error("Error downloading files");
-  }
-};
-export const handleZipFileDownload = async (
-  filenames: string[]
+export const handleDownload = async (
+  listFilenames: string[],
+  listFoldernames: string[],
+  paths: string[]
 ) => {
   try {
     const queryParams = new URLSearchParams();
-    filenames.forEach((filename) => queryParams.append("filenames", filename));
+    listFilenames.forEach((filename) => queryParams.append("file_names", filename));
+    listFoldernames.forEach((foldername) => queryParams.append("directory_names", foldername));
+    paths.forEach((path) => queryParams.append("paths", path));
+
     const axiosClient = getAxiosClient()
-    const response = await axiosClient.get(`${GNOSIS_API_URL}/upload/download/zip/`, {
+    const response = await axiosClient.get(`${GNOSIS_API_URL}/file/download`, {
       params: queryParams,
       responseType: "blob",
     });

@@ -2,11 +2,15 @@ import { Link, useLocation } from "react-router-dom";
 import { IoSearch } from "react-icons/io5";
 import { assets } from "../../assets/assets";
 import Navigate from "./Navigate";
-import { deleteGoogleLoginCookies } from "../../utils/auth/handleCookies";
+import {
+  deleteGoogleLoginCookies,
+  getGoogleLoginCookies,
+} from "../../utils/auth/handleCookies";
 import { useAppDispatch, useAppSelector } from "../../redux/hook";
-import { clearUserData } from "../../redux/slices/userSlice";
-import { onAuthStateChanged } from "firebase/auth";
+import { clearUserData, setUserData } from "../../redux/slices/userSlice";
 import { useEffect } from "react";
+import { IUserCookie } from "../../types/User";
+import { onAuthStateChanged, signOut } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 
 const Header = () => {
@@ -14,24 +18,28 @@ const Header = () => {
   const dispatch = useAppDispatch();
   const location = useLocation();
 
-    useEffect(()=>{
-      onAuthStateChanged(auth, (user) => {
-          if (user) {
+  useEffect(() => {
+    /*--------------------------------------------
+      ----- HANDLE USER LOGOUT/TOKEN EXPIRED -----
+      -------------------------------------------- */
+    onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        deleteGoogleLoginCookies();
+        dispatch(clearUserData());
+      }
+    });
 
-            const uid = user.uid;
-            console.log("uid", uid)
-          } else {
-
-            console.log("user is logged out")
-          }
-        });
-
-  }, [])
+    const userData: IUserCookie | null = getGoogleLoginCookies();
+    if (userData) {
+      dispatch(setUserData(userData));
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const handleLogout = () => {
-    deleteGoogleLoginCookies();
-    dispatch(clearUserData());
+    signOut(auth);
   };
+
   return (
     <div className="fixed top-0 left-0 h-[85px] w-full bg-gnosis-primary-black px-4 flex items-center z-50">
       <div className="h-full w-40 flex aspect-square shrink-0">

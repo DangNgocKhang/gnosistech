@@ -9,6 +9,7 @@ export default {
         "gnosis-primary-black": "#000000",
         "gnosis-primary-white": "#ffffff",
         "gnosis-gray-th1": "#F2F2F3",
+        "gnosis-gray-th2": "#444746",
       },
     },
   },
